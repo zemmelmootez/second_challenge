@@ -1,25 +1,72 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+const BodyShapeIndicator = () => {
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [age, setAge] = useState("");
+  const [bmi, setBMI] = useState(null);
+  const [result, setResult] = useState("");
+
+  const calculateBMI = () => {
+    if (height === "" || weight === "" || age === "") {
+      alert("Please enter height, weight, and age.");
+      return;
+    }
+
+    const heightInMeters = height / 100;
+    const bmiValue = weight / (heightInMeters * heightInMeters);
+    setBMI(bmiValue.toFixed(2));
+
+    if (bmiValue < 18.5) {
+      setResult("Underweight");
+    } else if (bmiValue >= 18.5 && bmiValue < 24.9) {
+      setResult("Normal Weight");
+    } else if (bmiValue >= 25 && bmiValue < 29.9) {
+      setResult("Overweight");
+    } else {
+      setResult("Obese");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h2>Body Shape Indicator</h2>
+      <label>
+        Height (cm):
+        <input
+          type="number"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
+        />
+      </label>
+      <br />
+      <label>
+        Weight (kg):
+        <input
+          type="number"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+        />
+      </label>
+      <br />
+      <label>
+        Age:
+        <input
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
+      </label>
+      <br />
+      <button onClick={calculateBMI}>Calculate BMI</button>
+      {bmi && (
+        <div>
+          <h3>Your BMI: {bmi}</h3>
+          <h3>Result: {result}</h3>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default App;
+export default BodyShapeIndicator;
